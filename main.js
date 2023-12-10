@@ -118,6 +118,41 @@ function insertionSort() {
 	animate();
 }
 
-insertionSort();
+function selectionSort() {
+	let minIndex;
 
-console.log(records);
+	for (let i = 0; i < cellsN; i++) {
+		minIndex = i;
+		currentRecord[order[i]].color = "red";
+		currentRecord[order[i]].y = 200;
+		storeRecord(currentRecord);
+		for (let j = i + 1; j < cellsN; j++) {
+			currentRecord[order[j]].color = "orange";
+			storeRecord(currentRecord);
+			if (values[minIndex] > values[j]) {
+				currentRecord[order[minIndex]].color = "";
+				currentRecord[order[minIndex]].y = 100;
+				currentRecord[order[j]].color = "red";
+				currentRecord[order[j]].y = 200;
+				minIndex = j;
+				storeRecord(currentRecord);
+			} else {
+				currentRecord[order[j]].color = "";
+			}
+		}
+
+		if (minIndex != i) {
+			swap(i, minIndex);
+			storeRecord(currentRecord);
+		}
+		currentRecord[order[i]].color = "#7cfd00";
+		currentRecord[order[i]].y = 100;
+		storeRecord(currentRecord);
+	}
+
+	setColors(order, "green");
+	storeRecord(currentRecord);
+	animate();
+}
+
+selectionSort();
