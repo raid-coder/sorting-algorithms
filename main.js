@@ -7,6 +7,7 @@ let order = [...new Array(cellsN)].map((_, i) => i);
 let baseRecord = order.map((_, i) => ({
 	offset: i,
 	color: "",
+	y: 100,
 }));
 let currentRecord = JSON.parse(JSON.stringify(baseRecord));
 let records = [JSON.parse(JSON.stringify(currentRecord))];
@@ -16,6 +17,7 @@ console.log("first record " + currentRecord.toString());
 function updateFrame(record) {
 	for (let i = 0; i < cellsN; i++) {
 		cells[i].style.left = record[i].offset * 100 + 40 + "px";
+		cells[i].style.top = record[i].y + "px";
 		cells[i].style.backgroundColor = record[i].color;
 	}
 }
@@ -35,6 +37,12 @@ function animate() {
 			clearInterval(id);
 		}
 	}, 1000);
+}
+
+function clearY() {
+	for (el of currentRecord) {
+		el.y = 100;
+	}
 }
 
 function clearColors() {
@@ -64,11 +72,11 @@ function swap(i, j) {
 }
 
 function bubbleSort() {
-	complitedCells = [];
+	completedCells = [];
 	for (let i = cellsN - 1; i > 0; i--) {
 		for (let j = 0; j < i; j++) {
 			clearColors();
-			setColors(complitedCells, "green");
+			setColors(completedCells, "green");
 			currentRecord[order[j]].color = "orange";
 			currentRecord[order[j + 1]].color = "blue";
 			if (values[j] > values[j + 1]) {
@@ -76,11 +84,40 @@ function bubbleSort() {
 			}
 			storeRecord(currentRecord);
 		}
-		complitedCells.push(i);
+		completedCells.push(i);
 	}
 	setColors(order, "green");
 	storeRecord(currentRecord);
 	animate();
 }
+
+function insertionSort() {
+	sortedSubSet = [];
+
+	for (let i = 0; i < cellsN; i++) {
+		let j = i - 1;
+		key = values[i];
+
+		sortedSubSet.push(i);
+		currentRecord[order[i]].y = 200;
+		currentRecord[order[i]].color = "orange";
+		storeRecord(currentRecord);
+
+		while (j >= 0 && values[j] > key) {
+			currentRecord[order[j + 1]].color = "orange";
+			swap(j, j + 1);
+			j--;
+			storeRecord(currentRecord);
+		}
+		clearY();
+		storeRecord(currentRecord);
+		setColors(sortedSubSet, "#7cfd00");
+	}
+	setColors(order, "green");
+	storeRecord(currentRecord);
+	animate();
+}
+
+insertionSort();
 
 console.log(records);
