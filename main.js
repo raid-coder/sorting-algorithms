@@ -261,4 +261,53 @@ function doMergeSort() {
 	animate();
 }
 
-doMergeSort();
+function partition(arr, low, high) {
+	let pivot = arr[high];
+	currentRecord[order[high]].color = "orange";
+	storeRecord(currentRecord);
+	let i = low - 1;
+	for (let j = low; j < high; j++) {
+		currentRecord[order[j]].color = "blue";
+		storeRecord(currentRecord);
+		if (arr[j] < pivot) {
+			i++;
+			swap(i, j);
+			storeRecord(currentRecord);
+			currentRecord[order[i]].color = "";
+		} else {
+			currentRecord[order[j]].color = "";
+		}
+		storeRecord(currentRecord);
+	}
+
+	currentRecord[order[high]].color = "green";
+	swap(i + 1, high);
+	storeRecord(currentRecord);
+
+	return i + 1;
+}
+
+function quickSort(arr, low, high) {
+	if (low == high) {
+		currentRecord[order[high]].color = "orange";
+		storeRecord(currentRecord);
+		currentRecord[order[high]].color = "green";
+		storeRecord(currentRecord);
+	}
+	if (low < high) {
+		let pi = partition(arr, low, high);
+
+		quickSort(arr, low, pi - 1);
+		quickSort(arr, pi + 1, high);
+	}
+}
+
+function doQuickSort() {
+	quickSort(values, 0, cellsN - 1);
+
+	setColors(order, "green");
+	storeRecord(currentRecord);
+	animate();
+}
+
+doQuickSort();
