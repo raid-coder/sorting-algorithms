@@ -33,13 +33,18 @@ function resetRecords() {
 	records = [JSON.parse(JSON.stringify(baseRecord))];
 }
 
+let currentFrame = 0;
+let intervalId;
+
 function animate() {
-	let i = 0;
-	let id = setInterval(() => {
-		updateFrame(records[i]);
-		i++;
-		if (i >= records.length) {
-			clearInterval(id);
+	running = true;
+	currentFrame = 0;
+	clearInterval(intervalId);
+	intervalId = setInterval(() => {
+		updateFrame(records[currentFrame]);
+		currentFrame++;
+		if (currentFrame >= records.length) {
+			clearInterval(intervalId);
 		}
 	}, 1000);
 }
@@ -337,6 +342,8 @@ let toggleBtn = document.querySelector(".toggle");
 let restartBtn = document.querySelector(".restart");
 let speedBtn = document.querySelector(".speed");
 
+let running = false;
+
 sortBtn.addEventListener("click", function () {
 	updateFrame(baseRecord);
 	resetRecords();
@@ -358,4 +365,24 @@ sortBtn.addEventListener("click", function () {
 			break;
 	}
 	console.log(records);
+});
+
+toggleBtn.addEventListener("click", function () {
+	if (running) {
+		running = false;
+		clearInterval(intervalId);
+	} else {
+		running = true;
+		intervalId = setInterval(() => {
+			updateFrame(records[currentFrame]);
+			currentFrame++;
+			if (currentFrame >= records.length) {
+				clearInterval(intervalId);
+			}
+		}, 1000);
+	}
+});
+
+restartBtn.addEventListener("click", function () {
+	animate();
 });
