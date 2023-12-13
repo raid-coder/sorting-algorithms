@@ -18,6 +18,7 @@ body {
 	display: flex;
 	gap: 10px;
 	background-color: #bbb;
+	margin-bottom: 5px;
 }
 
 .page .choices label {
@@ -41,11 +42,12 @@ body {
 
 .page .main {
 	position: relative;
+	padding: 30px 20px;
 }
 
 .page .main .cells-holder {
 	position: relative;
-	height: 300px;
+	height: 200px;
 }
 
 .page .main .cells-holder .cell {
@@ -65,7 +67,7 @@ body {
 	transition: left 0.5s 0.3s ease-in-out, top 0.5s 0.3s, background-color 0.4s;
 }
 
-.page .main .timer {
+.page .main .sort-btn {
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
@@ -74,8 +76,30 @@ body {
 	background-color: white;
 	padding: 5px 10px;
 	border-radius: 6px 6px 0 0;
+	cursor: pointer;
+}
+
+.page .main .sort-btn:hover {
+	background-color: wheat;
 }
 
 .page .controls {
-	padding: 20px;
+	padding: 10px;
+	background-color: #bbb;
+	display: flex;
+}
+
+.page .controls .time-controls {
+	display: flex;
+	gap: 15px;
+	margin-left: auto;
+	color: black;
+}
+
+.page .controls .time-controls div {
+	cursor: pointer;
+}
+
+.page .controls .time-controls div:hover {
+	color: red;
 }

@@ -7,14 +7,14 @@ let order = [...new Array(cellsN)].map((_, i) => i);
 let baseRecord = order.map((_, i) => ({
 	offset: i,
 	color: "",
-	y: 100,
+	y: 0,
 }));
 let currentRecord = JSON.parse(JSON.stringify(baseRecord));
 let records = [JSON.parse(JSON.stringify(currentRecord))];
 
 function updateFrame(record) {
 	for (let i = 0; i < cellsN; i++) {
-		cells[i].style.left = record[i].offset * 60 + 40 + "px";
+		cells[i].style.left = record[i].offset * 60 + "px";
 		cells[i].style.top = record[i].y + "px";
 		cells[i].style.backgroundColor = record[i].color;
 	}
@@ -26,12 +26,19 @@ function storeRecord(record) {
 	records.push(JSON.parse(JSON.stringify(record)));
 }
 
+function resetRecords() {
+	values = cells.map((e) => +e.textContent);
+	order = [...new Array(cellsN)].map((_, i) => i);
+	currentRecord = JSON.parse(JSON.stringify(baseRecord));
+	records = [JSON.parse(JSON.stringify(baseRecord))];
+}
+
 function animate() {
 	let i = 0;
 	let id = setInterval(() => {
 		updateFrame(records[i]);
 		i++;
-		if (i == records.length) {
+		if (i >= records.length) {
 			clearInterval(id);
 		}
 	}, 1000);
@@ -39,7 +46,7 @@ function animate() {
 
 function clearY() {
 	for (el of currentRecord) {
-		el.y = 100;
+		el.y = 0;
 	}
 }
 
@@ -114,7 +121,7 @@ function insertionSort() {
 		key = values[i];
 
 		sortedSubSet.push(i);
-		currentRecord[order[i]].y = 200;
+		currentRecord[order[i]].y = 100;
 		currentRecord[order[i]].color = "orange";
 		storeRecord(currentRecord);
 
@@ -139,16 +146,16 @@ function selectionSort() {
 	for (let i = 0; i < cellsN; i++) {
 		minIndex = i;
 		currentRecord[order[i]].color = "red";
-		currentRecord[order[i]].y = 200;
+		currentRecord[order[i]].y = 100;
 		storeRecord(currentRecord);
 		for (let j = i + 1; j < cellsN; j++) {
 			currentRecord[order[j]].color = "orange";
 			storeRecord(currentRecord);
 			if (values[minIndex] > values[j]) {
 				currentRecord[order[minIndex]].color = "";
-				currentRecord[order[minIndex]].y = 100;
+				currentRecord[order[minIndex]].y = 0;
 				currentRecord[order[j]].color = "red";
-				currentRecord[order[j]].y = 200;
+				currentRecord[order[j]].y = 100;
 				minIndex = j;
 				storeRecord(currentRecord);
 			} else {
@@ -161,7 +168,7 @@ function selectionSort() {
 			storeRecord(currentRecord);
 		}
 		currentRecord[order[i]].color = "#7cfd00";
-		currentRecord[order[i]].y = 100;
+		currentRecord[order[i]].y = 0;
 		storeRecord(currentRecord);
 	}
 
@@ -172,7 +179,7 @@ function selectionSort() {
 
 function merge(arr, l, m, r) {
 	for (let i = l; i <= r; i++) {
-		currentRecord[order[i]].y = 200;
+		currentRecord[order[i]].y = 100;
 	}
 	storeRecord(currentRecord);
 
@@ -199,14 +206,14 @@ function merge(arr, l, m, r) {
 		if (L[i] <= R[j]) {
 			arr[k] = L[i];
 			currentRecord[currentOrder[l + i]].offset = k;
-			currentRecord[currentOrder[l + i]].y = 100;
+			currentRecord[currentOrder[l + i]].y = 0;
 			currentRecord[currentOrder[l + i]].color = rColor;
 			order[k] = currentOrder[l + i];
 			i++;
 		} else {
 			arr[k] = R[j];
 			currentRecord[currentOrder[m + 1 + j]].offset = k;
-			currentRecord[currentOrder[m + 1 + j]].y = 100;
+			currentRecord[currentOrder[m + 1 + j]].y = 0;
 			currentRecord[currentOrder[m + 1 + j]].color = rColor;
 			order[k] = currentOrder[m + 1 + j];
 			j++;
@@ -218,7 +225,7 @@ function merge(arr, l, m, r) {
 	while (i < n1) {
 		arr[k] = L[i];
 		currentRecord[currentOrder[l + i]].offset = k;
-		currentRecord[currentOrder[l + i]].y = 100;
+		currentRecord[currentOrder[l + i]].y = 0;
 		currentRecord[currentOrder[l + i]].color = rColor;
 		order[k] = currentOrder[l + i];
 		i++;
@@ -229,7 +236,7 @@ function merge(arr, l, m, r) {
 	while (j < n2) {
 		arr[k] = R[j];
 		currentRecord[currentOrder[m + 1 + j]].offset = k;
-		currentRecord[currentOrder[m + 1 + j]].y = 100;
+		currentRecord[currentOrder[m + 1 + j]].y = 0;
 		currentRecord[currentOrder[m + 1 + j]].color = rColor;
 		order[k] = currentOrder[m + 1 + j];
 		j++;
@@ -310,4 +317,45 @@ function doQuickSort() {
 	animate();
 }
 
-doQuickSort();
+// Sorting Logic
+
+let sorted = false;
+let currentSortType = "bubble";
+
+let choices = document.getElementById("choices");
+
+choices.addEventListener("change", function (e) {
+	let target = e.target;
+	currentSortType = target.getAttribute("data-algo");
+});
+
+// Time Controle
+
+let sortBtn = document.querySelector(".sort-btn");
+
+let toggleBtn = document.querySelector(".toggle");
+let restartBtn = document.querySelector(".restart");
+let speedBtn = document.querySelector(".speed");
+
+sortBtn.addEventListener("click", function () {
+	updateFrame(baseRecord);
+	resetRecords();
+	switch (currentSortType) {
+		case "bubble":
+			bubbleSort();
+			break;
+		case "insertion":
+			insertionSort();
+			break;
+		case "selection":
+			selectionSort();
+			break;
+		case "merge":
+			doMergeSort();
+			break;
+		case "quick":
+			doQuickSort();
+			break;
+	}
+	console.log(records);
+});

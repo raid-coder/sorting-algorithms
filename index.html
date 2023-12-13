@@ -9,26 +9,52 @@
 	<body>
 		<h1>Sorting Algorithms:</h1>
 		<div class="page">
-			<div class="choices">
+			<div id="choices" class="choices">
 				<label for="algo1">
 					Bubble
-					<input type="radio" name="algos" id="algo1" checked />
+					<input
+						type="radio"
+						name="algos"
+						id="algo1"
+						data-algo="bubble"
+						checked
+					/>
 				</label>
 				<label for="algo2">
 					Insertion
-					<input type="radio" name="algos" id="algo2" />
+					<input
+						type="radio"
+						name="algos"
+						id="algo2"
+						data-algo="insertion"
+					/>
 				</label>
 				<label for="algo3">
 					Selection
-					<input type="radio" name="algos" id="algo3" />
+					<input
+						type="radio"
+						name="algos"
+						id="algo3"
+						data-algo="selection"
+					/>
 				</label>
 				<label for="algo4">
 					Merge
-					<input type="radio" name="algos" id="algo4" />
+					<input
+						type="radio"
+						name="algos"
+						id="algo4"
+						data-algo="merge"
+					/>
 				</label>
 				<label for="algo5">
 					Quick
-					<input type="radio" name="algos" id="algo5" />
+					<input
+						type="radio"
+						name="algos"
+						id="algo5"
+						data-algo="quick"
+					/>
 				</label>
 			</div>
 			<div class="main">
@@ -43,17 +69,17 @@
 					<div class="cell">8</div>
 					<div class="cell">5</div>
 				</div>
-				<div class="timer">12:20</div>
+				<div class="sort-btn">Sort</div>
 			</div>
 			<div class="controls">
 				<div class="cells-count">
 					<input type="text" />
 				</div>
-				<div class="randomize"></div>
+				<button class="randomize">Random</button>
 				<div class="time-controls">
-					<div class="restart"></div>
-					<div class="toggle"></div>
-					<div class="speed"></div>
+					<div class="restart">Restart</div>
+					<div class="toggle">Toggle</div>
+					<div class="speed">Speed</div>
 				</div>
 			</div>
 		</div>
