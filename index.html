@@ -4,7 +4,11 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>sorting algorithms</title>
-		<link rel="stylesheet" href="style.css" />
+		<!-- mian stylesheet -->
+		<link rel="stylesheet" href="css/style.css" />
+
+		<!-- Font Awesome Liberary -->
+		<link rel="stylesheet" href="css/all.min.css" />
 	</head>
 	<body>
 		<h1>Sorting Algorithms:</h1>
@@ -77,9 +81,14 @@
 				</div>
 				<button class="randomize">Random</button>
 				<div class="time-controls">
-					<div class="restart">Restart</div>
-					<div class="toggle">Toggle</div>
-					<div class="speed">Speed</div>
+					<div class="restart">
+						<i class="fa-solid fa-rotate"></i>
+					</div>
+					<div class="toggle paused"></div>
+					<div class="speed">
+						<i class="fa-solid fa-forward"></i>
+						<span id="speed-value">1.0</span>x
+					</div>
 				</div>
 			</div>
 		</div>

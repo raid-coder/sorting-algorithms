@@ -100,6 +100,25 @@ body {
 	cursor: pointer;
 }
 
+.page .controls .time-controls .toggle {
+	min-width: 20px;
+	text-align: center;
+}
+
+.page .controls .time-controls .toggle::before {
+	content: "\f04c";
+	font-family: var(--fa-style-family-classic);
+	font-weight: 900;
+}
+
+.page .controls .time-controls .toggle.paused::before {
+	content: "\f04b";
+}
+
+.page .controls .time-controls .speed {
+	min-width: 50px;
+}
+
 .page .controls .time-controls div:hover {
 	color: red;
 }

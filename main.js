@@ -37,16 +37,8 @@ let currentFrame = 0;
 let intervalId;
 
 function animate() {
-	running = true;
 	currentFrame = 0;
-	clearInterval(intervalId);
-	intervalId = setInterval(() => {
-		updateFrame(records[currentFrame]);
-		currentFrame++;
-		if (currentFrame >= records.length) {
-			clearInterval(intervalId);
-		}
-	}, 1000);
+	run();
 }
 
 function clearY() {
@@ -340,9 +332,27 @@ let sortBtn = document.querySelector(".sort-btn");
 
 let toggleBtn = document.querySelector(".toggle");
 let restartBtn = document.querySelector(".restart");
-let speedBtn = document.querySelector(".speed");
 
 let running = false;
+
+function run() {
+	running = true;
+	toggleBtn.classList.remove("paused");
+	clearInterval(intervalId);
+	intervalId = setInterval(() => {
+		updateFrame(records[currentFrame]);
+		currentFrame++;
+		if (currentFrame >= records.length) {
+			clearInterval(intervalId);
+		}
+	}, 1000 / speed);
+}
+
+function pause() {
+	running = false;
+	toggleBtn.classList.add("paused");
+	clearInterval(intervalId);
+}
 
 sortBtn.addEventListener("click", function () {
 	updateFrame(baseRecord);
@@ -369,20 +379,48 @@ sortBtn.addEventListener("click", function () {
 
 toggleBtn.addEventListener("click", function () {
 	if (running) {
-		running = false;
-		clearInterval(intervalId);
+		pause();
 	} else {
-		running = true;
-		intervalId = setInterval(() => {
-			updateFrame(records[currentFrame]);
-			currentFrame++;
-			if (currentFrame >= records.length) {
-				clearInterval(intervalId);
-			}
-		}, 1000);
+		run();
 	}
 });
 
 restartBtn.addEventListener("click", function () {
 	animate();
 });
+
+// speed
+
+let speedBtn = document.querySelector(".speed");
+let speedValueHolder = document.getElementById("speed-value");
+
+let speed = 1;
+
+speedBtn.addEventListener("click", function () {
+	speed++;
+	setTransitions(speed);
+	speedValueHolder.textContent = speed;
+	if (running) {
+		clearInterval(intervalId);
+		intervalId = setInterval(() => {
+			updateFrame(records[currentFrame]);
+			currentFrame++;
+			if (currentFrame >= records.length) {
+				clearInterval(intervalId);
+			}
+		}, 1000 / speed);
+	}
+});
+
+function setTransitions(speed) {
+	for (const cell of cells) {
+		cell.style.setProperty(
+			"transition",
+			`left ${0.5 - (speed - 1) * 0.025}s ${
+				speed > 2 ? 0 : 0.3 / speed
+			}s ease-in-out, top ${0.5 - (speed - 1) * 0.025}s ${
+				speed > 2 ? 0 : 0.3 / speed
+			}s, background-color ${0.4 - (speed - 1) * 0.02}s`
+		);
+	}
+}
