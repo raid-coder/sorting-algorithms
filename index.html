@@ -77,9 +77,11 @@
 			</div>
 			<div class="controls">
 				<div class="cells-count">
-					<input type="text" />
+					<input type="text" id="cells-N" />
 				</div>
-				<button class="randomize">Random</button>
+				<button class="randomize" id="randomize-btn">
+					<i class="fa-solid fa-dice-three"></i>
+				</button>
 				<div class="time-controls">
 					<div class="restart">
 						<i class="fa-solid fa-rotate"></i>
@@ -87,7 +89,7 @@
 					<div class="toggle paused"></div>
 					<div class="speed">
 						<i class="fa-solid fa-forward"></i>
-						<span id="speed-value">1.0</span>x
+						<span id="speed-value">1</span>x
 					</div>
 				</div>
 			</div>

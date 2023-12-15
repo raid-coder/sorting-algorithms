@@ -1,26 +1,66 @@
 let cellHolder = document.getElementById("cells");
-let cells = Array.from(cellHolder.children);
-let cellsN = cells.length;
-let values = cells.map((e) => +e.textContent);
 
-let order = [...new Array(cellsN)].map((_, i) => i);
-let baseRecord = order.map((_, i) => ({
-	offset: i,
-	color: "",
-	y: 0,
-}));
-let currentRecord = JSON.parse(JSON.stringify(baseRecord));
-let records = [JSON.parse(JSON.stringify(currentRecord))];
+let baseRecord;
+let currentRecord;
+let records;
+
+// generate cells
+
+let cells;
+let cellsN = 20;
+let values;
+let order;
+
+let cellWidth;
+let gapSize = 5;
+
+function adjustSizes() {
+	let spacesWidth = (cellsN - 1) * gapSize;
+
+	let width = cellHolder.offsetWidth - spacesWidth;
+
+	cellWidth = width / cellsN;
+
+	for (const cell of cells) {
+		cell.style.fontSize = cellWidth * (3 / 8) + "px";
+	}
+}
+
+function initializeCellsInfo() {
+	cells = Array.from(cellHolder.children);
+	baseRecord = [...new Array(cellsN)].map((_, i) => ({
+		offset: i,
+		color: "",
+		y: 0,
+	}));
+	resetRecords();
+}
+
+function generateCells(n) {
+	cellsN = n;
+	let resString = "";
+	for (let i = 0; i < n; i++) {
+		resString += `<div class="cell">${randomInt(0, 100)}</div>`;
+	}
+
+	cellHolder.innerHTML = resString;
+	initializeCellsInfo();
+	adjustSizes();
+	setTransitions(speed);
+	pause();
+	currentFrame = 0;
+	updateFrame(baseRecord);
+}
+
+// animation frames
 
 function updateFrame(record) {
 	for (let i = 0; i < cellsN; i++) {
-		cells[i].style.left = record[i].offset * 60 + "px";
+		cells[i].style.left = record[i].offset * (cellWidth + gapSize) + "px";
 		cells[i].style.top = record[i].y + "px";
 		cells[i].style.backgroundColor = record[i].color;
 	}
 }
-
-updateFrame(baseRecord);
 
 function storeRecord(record) {
 	records.push(JSON.parse(JSON.stringify(record)));
@@ -62,7 +102,7 @@ function setColors(indices, color) {
 function randomInt(start, end) {
 	// start <= n < end
 
-	return Math.floor(Math.random() * (end - start)) - start;
+	return Math.floor(Math.random() * (end - start)) + start;
 }
 
 function randomColor() {
@@ -89,6 +129,8 @@ function swap(i, j) {
 	currentRecord[order[i]].offset = currentRecord[order[j]].offset;
 	currentRecord[order[j]].offset = tmp;
 }
+
+// sorting functions
 
 function bubbleSort() {
 	completedCells = [];
@@ -374,7 +416,6 @@ sortBtn.addEventListener("click", function () {
 			doQuickSort();
 			break;
 	}
-	console.log(records);
 });
 
 toggleBtn.addEventListener("click", function () {
@@ -424,3 +465,29 @@ function setTransitions(speed) {
 		);
 	}
 }
+
+// randomize
+
+let randomBtn = document.getElementById("randomize-btn");
+let numInput = document.getElementById("cells-N");
+
+randomBtn.addEventListener("click", function () {
+	pause();
+	let numberOfCells = numInput.value;
+
+	if (numberOfCells == "") {
+		console.log("feild is empty !!");
+		return;
+	}
+
+	numberOfCells = +numberOfCells;
+
+	if (numberOfCells < 2 || numberOfCells > 100) {
+		console.log("write a number between 3 and 100 !!");
+		return;
+	}
+
+	generateCells(numberOfCells);
+});
+
+generateCells(20);
