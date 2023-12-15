@@ -504,3 +504,5 @@ randomBtn.addEventListener("click", function () {
 });
 
 generateCells(10);
+
+alert("Happy Birth Day !!! 🎈🎈🎉🥳🎁🎉🎈🎈");
