@@ -435,12 +435,14 @@ restartBtn.addEventListener("click", function () {
 let speedBtn = document.querySelector(".speed");
 let speedValueHolder = document.getElementById("speed-value");
 
+let speedSlider = document.getElementById("speed-range-value");
+
 let speed = 1;
 
-speedBtn.addEventListener("click", function () {
-	speed++;
+function setSpeed() {
 	setTransitions(speed);
 	speedValueHolder.textContent = speed;
+	speedSlider.value = speed;
 	if (running) {
 		clearInterval(intervalId);
 		intervalId = setInterval(() => {
@@ -451,6 +453,12 @@ speedBtn.addEventListener("click", function () {
 			}
 		}, 1000 / speed);
 	}
+}
+
+speedBtn.addEventListener("click", function () {
+	speed++;
+	if (speed > 20) speed = 1;
+	setSpeed();
 });
 
 function setTransitions(speed) {
@@ -465,6 +473,11 @@ function setTransitions(speed) {
 		);
 	}
 }
+
+speedSlider.addEventListener("click", function () {
+	speed = +speedSlider.value;
+	setSpeed();
+});
 
 // randomize
 
@@ -490,4 +503,4 @@ randomBtn.addEventListener("click", function () {
 	generateCells(numberOfCells);
 });
 
-generateCells(20);
+generateCells(10);
