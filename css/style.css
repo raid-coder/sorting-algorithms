@@ -21,6 +21,7 @@ body {
 .page .choices {
 	padding: 10px;
 	display: flex;
+	flex-wrap: wrap;
 	gap: 10px;
 	background-color: #bbb;
 	margin-bottom: 5px;
@@ -93,6 +94,10 @@ body {
 	padding: 10px;
 	background-color: #bbb;
 	display: flex;
+}
+
+.page .controls .cells-count input {
+	width: 150px;
 }
 
 .page .controls .time-controls {

@@ -26,6 +26,11 @@ function adjustSizes() {
 	}
 }
 
+window.onresize = function () {
+	adjustSizes();
+	updateFrame(baseRecord);
+};
+
 function initializeCellsInfo() {
 	cells = Array.from(cellHolder.children);
 	baseRecord = [...new Array(cellsN)].map((_, i) => ({
@@ -474,7 +479,7 @@ function setTransitions(speed) {
 	}
 }
 
-speedSlider.addEventListener("click", function () {
+speedSlider.addEventListener("change", function () {
 	speed = +speedSlider.value;
 	setSpeed();
 });
