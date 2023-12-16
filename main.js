@@ -11,24 +11,40 @@ let cellsN = 20;
 let values;
 let order;
 
+let rectangleMode = false;
+
 let cellWidth;
-let gapSize = 5;
 
 function adjustSizes() {
-	let spacesWidth = (cellsN - 1) * gapSize;
+	let totalWidth = cellHolder.offsetWidth;
 
-	let width = cellHolder.offsetWidth - spacesWidth;
+	cellWidth = (3 * totalWidth) / (4 * cellsN - 1);
 
-	cellWidth = width / cellsN;
+	gapSize = cellWidth / 3;
+
+	// if cells too small display as rectangle
+	rectangleMode = cellWidth < 30;
 
 	for (const cell of cells) {
-		cell.style.fontSize = cellWidth * (3 / 8) + "px";
+		cell.style.fontSize =
+			(cellWidth > 100 ? 100 * (3 / 8) : cellWidth * (3 / 8)) + "px";
+		if (rectangleMode) {
+			cell.style.height = +cell.textContent + 1 + "px";
+			cell.style.border = "none";
+			cell.style.borderRadius = 0;
+			cell.style.bottom = "105px";
+		} else {
+			cell.style.height = "";
+			cell.style.border = "";
+			cell.style.borderRadius = "";
+			cell.style.bottom = "";
+		}
 	}
 }
 
 window.onresize = function () {
 	adjustSizes();
-	updateFrame(baseRecord);
+	updateFrame(records[currentFrame]);
 };
 
 function initializeCellsInfo() {
@@ -62,7 +78,7 @@ function generateCells(n) {
 function updateFrame(record) {
 	for (let i = 0; i < cellsN; i++) {
 		cells[i].style.left = record[i].offset * (cellWidth + gapSize) + "px";
-		cells[i].style.top = record[i].y + "px";
+		cells[i].style.translate = `0 ${record[i].y}px`;
 		cells[i].style.backgroundColor = record[i].color;
 	}
 }
@@ -111,14 +127,14 @@ function randomInt(start, end) {
 }
 
 function randomColor() {
-	const hex = "0123456789abcdef";
+	let r, g, b;
+	do {
+		r = randomInt(0, 256);
+		g = randomInt(0, 256);
+		b = randomInt(0, 256);
+	} while (r + g + b < 250);
 
-	let res = "#";
-	for (let i = 0; i < 3; i++) {
-		res += hex[randomInt(0, 16)];
-	}
-
-	return res;
+	return `rgb(${r}, ${g}, ${b})`;
 }
 
 function swap(i, j) {
@@ -165,7 +181,7 @@ function insertionSort() {
 		key = values[i];
 
 		sortedSubSet.push(i);
-		currentRecord[order[i]].y = 100;
+		currentRecord[order[i]].y = 105;
 		currentRecord[order[i]].color = "orange";
 		storeRecord(currentRecord);
 
@@ -190,7 +206,7 @@ function selectionSort() {
 	for (let i = 0; i < cellsN; i++) {
 		minIndex = i;
 		currentRecord[order[i]].color = "red";
-		currentRecord[order[i]].y = 100;
+		currentRecord[order[i]].y = 105;
 		storeRecord(currentRecord);
 		for (let j = i + 1; j < cellsN; j++) {
 			currentRecord[order[j]].color = "orange";
@@ -199,7 +215,7 @@ function selectionSort() {
 				currentRecord[order[minIndex]].color = "";
 				currentRecord[order[minIndex]].y = 0;
 				currentRecord[order[j]].color = "red";
-				currentRecord[order[j]].y = 100;
+				currentRecord[order[j]].y = 105;
 				minIndex = j;
 				storeRecord(currentRecord);
 			} else {
@@ -223,7 +239,7 @@ function selectionSort() {
 
 function merge(arr, l, m, r) {
 	for (let i = l; i <= r; i++) {
-		currentRecord[order[i]].y = 100;
+		currentRecord[order[i]].y = 105;
 	}
 	storeRecord(currentRecord);
 
@@ -474,7 +490,8 @@ function setTransitions(speed) {
 				speed > 2 ? 0 : 0.3 / speed
 			}s ease-in-out, top ${0.5 - (speed - 1) * 0.025}s ${
 				speed > 2 ? 0 : 0.3 / speed
-			}s, background-color ${0.4 - (speed - 1) * 0.02}s`
+			}s, background-color ${0.4 - (speed - 1) * 0.02}s,
+			translate ${0.5 - (speed - 1) * 0.025}s ${speed > 2 ? 0 : 0.3 / speed}s`
 		);
 	}
 }
@@ -509,5 +526,3 @@ randomBtn.addEventListener("click", function () {
 });
 
 generateCells(10);
-
-alert("Happy Birth Day !!! 🎈🎈🎉🥳🎁🎉🎈🎈");

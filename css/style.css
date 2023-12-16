@@ -53,15 +53,14 @@ body {
 
 .page .main .cells-holder {
 	position: relative;
-	height: 200px;
+	height: 205px;
 }
 
 .page .main .cells-holder .cell {
 	width: 2.666em;
-	aspect-ratio: 1/1;
+	height: 2.666em;
 	background-color: rgb(144, 220, 195);
 	color: black;
-	font-size: 15px;
 	font-weight: bold;
 	border-radius: 6px;
 	border: 3px solid white;
@@ -69,9 +68,6 @@ body {
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	left: 0;
-	top: 100px;
-	transition: left 0.5s 0.3s ease-in-out, top 0.5s 0.3s, background-color 0.4s;
 }
 
 .page .main .sort-btn {
@@ -96,6 +92,14 @@ body {
 	display: flex;
 }
 
+@media (width < 500px) {
+	.page .controls {
+		flex-direction: column;
+		align-items: center;
+		gap: 10px;
+	}
+}
+
 .page .controls .cells-count input {
 	width: 150px;
 }
@@ -106,6 +110,12 @@ body {
 	margin-left: auto;
 	color: black;
 	position: relative;
+}
+
+@media (width < 500px) {
+	.page .controls .time-controls {
+		margin: unset;
+	}
 }
 
 .page .controls .time-controls div {
@@ -129,6 +139,7 @@ body {
 
 .page .controls .time-controls .speed {
 	min-width: 50px;
+	text-align: right;
 }
 
 .page .controls .time-controls div:hover {
@@ -143,4 +154,10 @@ body {
 
 .page .controls .time-controls .speed-range input {
 	width: 100%;
+}
+
+.author {
+	text-align: right;
+	margin-top: 20px;
+	color: #777;
 }
